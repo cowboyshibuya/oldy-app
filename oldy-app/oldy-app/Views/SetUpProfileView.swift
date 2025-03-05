@@ -69,12 +69,12 @@ struct SetUpProfileView: View {
                         }
                     }
                 } // VStack
-                .padding()
                 .onAppear {
                     withAnimation(.spring(duration: 1)) {
                         showNameForm = true
                     }
                 }
+                .padding()
                 .navigationTitle("Let's set your profile 🧑‍🎤")
                 .toolbar {
                     Button("Skip") {
