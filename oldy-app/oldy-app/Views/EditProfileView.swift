@@ -36,11 +36,12 @@ struct EditProfileView: View {
                         Text("Select a setting to edit")
                             .font(.title3).bold()
                             .foregroundStyle(.secondary)
+                            .padding()
                         HStack(spacing: 20) {
-                            // TODO: On tap shows related form with animation
+                            Spacer()
                             
                             Button(action: {
-                                withAnimation(.spring(duration: 1)) {
+                                withAnimation {
                                     showBirthdateForm = false
                                     showTargetAgeForm = false
                                     showNameForm.toggle()
@@ -86,12 +87,15 @@ struct EditProfileView: View {
                                 .frame(width: 100, height: 100)
                                 .glass(cornerRadius: 20)
                             }
+                            
+                            Spacer()
                         } // HStack
+                        .fixedSize()
                     }
                     
                     // Name Form
                     if showNameForm {
-                        VStack(alignment: .center) {
+                        VStack(alignment: .leading) {
                             Text("Edit your name")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
@@ -112,36 +116,26 @@ struct EditProfileView: View {
                                     ,alignment: .trailing
                                 )
                         }
-                        .opacity(showNameForm ? 1 : 0)
+                        .padding()
                     }
                     
                     // Birthdate Form
                     if showBirthdateForm {
-                        VStack(alignment: .center) {
-                            HStack(spacing: 40) {
-                                Text("Edit your birthdate")
-                                    .font(.headline)
-                                    .foregroundStyle(.secondary)
+                        VStack {
+                            Text("Edit your birthdate")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            HStack {
+                                Spacer()
                                 
-                                Button {
-                                    withAnimation {
-                                        displayWheelDatePickerStyle.toggle()
-                                    }
-                                } label: {
-                                    Image(systemName: displayWheelDatePickerStyle ? "calendar.circle" : "calendar.circle.fill")
-                                        .imageScale(.large)
-                                }
-                            }
-                            if displayWheelDatePickerStyle {
                                 DatePicker("Birthdate", selection: $selectedDate, in: ...Date(), displayedComponents: .date)
                                     .labelsHidden()
                                     .datePickerStyle(.wheel)
-                            } else {
-                                DatePicker("Birthdate", selection: $selectedDate, in: ...Date(), displayedComponents: .date)
-                                    .labelsHidden()
-                                    .datePickerStyle(.graphical)
+                                
+                                Spacer()
                             }
                         }
+                        
                     }
                     
                     // Target Age Form
@@ -191,9 +185,6 @@ struct EditProfileView: View {
                             }
                         }
                     }
-                    
-                    
-                    
                 } // VStack
                 .padding()
             } // ZStack
@@ -202,7 +193,6 @@ struct EditProfileView: View {
                 targetAge = profile.targetAge
                 selectedDate = profile.birthdate
             }
-            .navigationTitle("Edit Information")
             .toolbar {
                 Button("Done") {
                     if targetAge > 0 && targetAge > profile.age {

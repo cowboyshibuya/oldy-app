@@ -13,7 +13,8 @@ struct SettingsView: View {
     
     // sheet properties
     @State private var showBackgroundColorSelectionSheet: Bool = false
-    @State private var showEditProfileSheet: Bool = false
+    @State private var showEditProfileSheet: Bool = true
+
     
     @State private var showResetAlert = false
 
@@ -88,7 +89,7 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showEditProfileSheet) {
                 EditProfileView(profile: profile)
-                    .presentationDetents([.medium])
+                    .presentationDetents([.medium, .large])
             }
             .alert("Reset App", isPresented: $showResetAlert) {
                 Button("Reset", role: .destructive) {

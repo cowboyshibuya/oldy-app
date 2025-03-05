@@ -16,6 +16,9 @@ struct SetUpProfileView: View {
     @State private var selectedDate = Date().addingTimeInterval(-500000)
     @State private var targetAge : Int = 30
     @State private var showButton = false
+    var age: Int {
+        Calendar.current.component(.year, from: Date()) - Calendar.current.component(.year, from: selectedDate) - 1
+    }
     
     // animation properties
     @State private var showNameForm: Bool = false
@@ -24,8 +27,10 @@ struct SetUpProfileView: View {
     
     @FocusState private var isNameFocused: Bool
     @FocusState private var isDateFocused: Bool
+    @FocusState private var isTargetAgeFocused: Bool
     
     @State private var showSkipAlert = false
+    @State private var displayNumpadFormatStyle: Bool = false
     
     var body: some View {
         #warning("Need to fix the background animation")
@@ -60,9 +65,7 @@ struct SetUpProfileView: View {
                                 Spacer()
                             }
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 15).fill(.white))
-                            .foregroundStyle(.black)
-                            .padding()
+                            .glass(cornerRadius: 30)
                         }
                     }
                 } // VStack
@@ -99,6 +102,19 @@ struct SetUpProfileView: View {
                 .focused($isNameFocused)
                 .padding()
                 .glass(cornerRadius: 20)
+                .overlay (
+                    Button {
+                        if !name.isEmpty {
+                            name = ""
+                        }
+                    } label: {
+                        Image(systemName: "xmark.circle")
+                            .foregroundStyle(.secondary)
+                    }
+                        .padding(.trailing, 20)
+                        .opacity(name.isEmpty ? 0 : 1)
+                    ,alignment: .trailing
+                )
                 .onChange(of: isNameFocused) { _,focused in
                     if !focused {
                         withAnimation(.spring(duration: 1)) {
@@ -127,16 +143,55 @@ struct SetUpProfileView: View {
     }
     
     private var targetAgeForm: some View {
-        VStack {
-            Text("Select a target age")
-                .font(.headline)
-            Picker("Target Age", selection: $targetAge) {
-                ForEach(18..<100, id: \.self) { age in
-                    Text("\(age)").tag(age)
+        VStack(alignment: .center) {
+            HStack(spacing: 40) {
+                Text("Enter a target age")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                
+                Button {
+                    withAnimation {
+                        displayNumpadFormatStyle.toggle()
+                    }
+                } label: {
+                    Image(systemName: displayNumpadFormatStyle ? "hand.point.up.left.and.text.fill" : "textformat.123")
+                        .imageScale(.large)
                 }
             }
-            .labelsHidden()
-            .pickerStyle(.wheel)
+            
+            if displayNumpadFormatStyle {
+                HStack {
+                    Spacer()
+                    
+                    TextField("Target Age", value: $targetAge, format: .number)
+                        .focused($isTargetAgeFocused)
+                        .keyboardType(.numberPad)
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .frame(width: 80)
+                        .padding()
+                        .glass(cornerRadius: 50)
+                        .onChange(of: isTargetAgeFocused) {
+                            if targetAge < age {
+                                targetAge = age
+                            }
+                        }
+                    Text("year")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                }
+                
+            } else {
+                Picker("Target Age", selection: $targetAge) {
+                    ForEach(age..<99, id: \.self) { target in
+                        Text("\(target) year").tag(target)
+                            .font(.largeTitle)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
         }
     }
     
