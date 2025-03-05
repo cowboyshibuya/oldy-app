@@ -56,7 +56,7 @@ struct EditProfileView: View {
                             }
                             
                             Button(action: {
-                                withAnimation(.spring(duration: 1)) {
+                                withAnimation {
                                     showNameForm = false
                                     showTargetAgeForm = false
                                     showBirthdateForm.toggle()
@@ -72,7 +72,7 @@ struct EditProfileView: View {
                             }
                             
                             Button(action: {
-                                withAnimation(.spring(duration: 1)) {
+                                withAnimation {
                                     showBirthdateForm = false
                                     showNameForm = false
                                     showTargetAgeForm.toggle()
