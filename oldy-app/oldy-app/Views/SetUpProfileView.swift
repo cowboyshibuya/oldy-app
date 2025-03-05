@@ -17,7 +17,7 @@ struct SetUpProfileView: View {
     @State private var targetAge : Int = 30
     @State private var showButton = false
     var age: Int {
-        Calendar.current.component(.year, from: Date()) - Calendar.current.component(.year, from: selectedDate)
+        Calendar.current.component(.year, from: Date()) - Calendar.current.component(.year, from: selectedDate) - 1
     }
     
     // animation properties

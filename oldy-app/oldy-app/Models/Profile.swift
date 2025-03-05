@@ -14,7 +14,7 @@ final class Profile {
     var birthdate: Date
     var targetAge: Int
     var age: Int {
-        Calendar.current.component(.year, from: Date()) - Calendar.current.component(.year, from: birthdate)
+        Calendar.current.component(.year, from: Date()) - Calendar.current.component(.year, from: birthdate) - 1
     }
     
     init(name: String, birthdate: Date, targetAge: Int = 85) {
