@@ -65,9 +65,7 @@ struct SetUpProfileView: View {
                                 Spacer()
                             }
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 15).fill(.white))
-                            .foregroundStyle(.black)
-                            .padding()
+                            .glass(cornerRadius: 30)
                         }
                     }
                 } // VStack
