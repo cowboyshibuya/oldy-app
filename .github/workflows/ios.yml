@@ -22,7 +22,7 @@ jobs:
     - name: Install CocoaPods
       run: |
         gem install cocoapods
-        pod install --project-directory=oldy-app/oldy-app/oldy-app.xcodeproj
+        pod install --project-directory=oldy-app
 
     - name: Build and test
       run: |
