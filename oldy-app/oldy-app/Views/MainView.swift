@@ -90,7 +90,7 @@ struct MainView: View {
                     timer?.invalidate()
                 }
             } // Zstack
-            .navigationTitle("daysl")
+            .navigationTitle("oldy")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 NavigationLink(destination: SettingsView(profile: profile)) {

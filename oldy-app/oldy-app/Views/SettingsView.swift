@@ -13,7 +13,7 @@ struct SettingsView: View {
     
     // sheet properties
     @State private var showBackgroundColorSelectionSheet: Bool = false
-    @State private var showEditProfileSheet: Bool = true
+    @State private var showEditProfileSheet: Bool = false
 
     
     @State private var showResetAlert = false
