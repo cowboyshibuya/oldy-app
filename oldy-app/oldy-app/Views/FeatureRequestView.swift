@@ -1,65 +1,55 @@
 //
-//  BugReportView.swift
+//  FeatureRequestView.swift
 //  oldy-app
 //
-//  Created by Spike Hermann on 10/03/2025.
+//  Created by Spike Hermann on 12/03/2025.
 //
 
 import SwiftUI
 
-struct BugReportView: View {
+struct FeatureRequestView: View {
     @Environment(\.dismiss) private var dismiss
-    @State var feedBackVM : FeedbackViewModel = .shared
-  
-    @FocusState private var isTextEditorFocused : Bool
-    // add image
+    @State private var feedbackVM : FeedbackViewModel = .shared
+    @FocusState private var isDescriptionFocused : Bool
     
-    /**
-     TODO:
-     - set service supabase process to insert in database
-     - show alert confirmation when bug is reported
-     - implement screenshot feature
-     - improve view (potential UI issues in different devices)
-     - improve textEditor
-     
-     **/
     var body: some View {
         NavigationStack {
             ZStack {
                 BackgroundView()
-                Color.black.opacity(0.5)
+                Color.black.opacity(0.2)
                     .ignoresSafeArea()
                 
                 VStack(spacing: 10) {
                     VStack(alignment: .leading) {
-                        Text("What is the issue?")
+                        Text("What feature would you be happy to have here?")
                             .font(.headline)
                             .foregroundStyle(.secondary)
-                        TextField("Bug in the settings page", text: $feedBackVM.title)
+                        
+                        TextField("New colors for background", text: $feedbackVM.title)
                             .padding()
                             .glass(cornerRadius: 20)
                             .overlay (
                                 Button {
-                                    if !feedBackVM.title.isEmpty {
-                                        feedBackVM.title = ""
+                                    if !feedbackVM.title.isEmpty {
+                                        feedbackVM.title = ""
                                     }
                                 } label: {
                                     Image(systemName: "xmark.circle")
                                         .foregroundStyle(.secondary)
                                 }
                                     .padding(.trailing, 20)
-                                    .opacity(feedBackVM.title.isEmpty ? 0 : 1)
+                                    .opacity(feedbackVM.title.isEmpty ? 0 : 1)
                                 ,alignment: .trailing
                             )
                     }
                     .padding()
                     
                     VStack(alignment: .leading) {
-                        Text("Describe the issue")
+                        Text("Describe the feature")
                             .font(.headline)
                             .foregroundStyle(.secondary)
-                        TextEditor(text: $feedBackVM.description)
-                            .focused($isTextEditorFocused)
+                        TextEditor(text: $feedbackVM.description)
+                            .focused($isDescriptionFocused)
                             .padding()
                             .textEditorStyle(.plain)
                             .glass(cornerRadius: 20)
@@ -79,31 +69,43 @@ struct BugReportView: View {
                             .foregroundStyle(.secondary)
                             .fontWeight(.bold)
                             .offset(y: 50)
-                            .opacity(isTextEditorFocused || !feedBackVM.description.isEmpty ? 0 : 1)
+                            .opacity(isDescriptionFocused || !feedbackVM.description.isEmpty ? 0 : 1)
                             )
-                            .frame(width: .infinity)
+                            .frame(maxWidth: .infinity)
                     }
                     .padding(.horizontal)
                     
                     DefaultButton(icon: "checkmark.circle", title: "Submit") {
-                        Task { await feedBackVM.sendBugReport() }
+                        Task {
+                             await feedbackVM.sendFeatureRequest()
+                        }
                     }
                 }
-            }
-            .navigationTitle("🐞 Report a bug")
-            .toolbar {
-                Button("Cancel") {
-                    dismiss()
+                .navigationTitle("💫 Feature Request")
+                .toolbar {
+                    Button("Cancel") {
+                        dismiss()
+                    }
                 }
-            }
-            .alert("Success", isPresented: .constant(feedBackVM.successMessage != nil)) {
-                Button("Ok") {
-                    dismiss()
-                    feedBackVM.successMessage = nil
+                .alert("Success", isPresented: .constant(feedbackVM.successMessage != nil)) {
+                    Button("Ok") {
+                        dismiss()
+                        feedbackVM.successMessage = nil
+                    }
+                } message: {
+                    if let message = feedbackVM.successMessage {
+                        Text(message)
+                    }
                 }
-            } message: {
-                if let message = feedBackVM.successMessage {
-                    Text(message)
+                .alert("Error", isPresented: .constant(feedbackVM.errorMessage != nil)) {
+                    Button("Ok") {
+                        dismiss()
+                        feedbackVM.errorMessage = nil
+                    }
+                } message: {
+                    if let message = feedbackVM.errorMessage {
+                        Text(message)
+                    }
                 }
             }
         }
@@ -111,5 +113,5 @@ struct BugReportView: View {
 }
 
 #Preview {
-    BugReportView()
+    FeatureRequestView()
 }

@@ -22,7 +22,6 @@ final class FeedbackViewModel {
     var version: String {
         getAppVersion() + getBuildNumber()
     }
-    var type: FeedbackType = .bug
     var title = ""
     var description = ""
 //    var screenshot: String?
@@ -38,12 +37,12 @@ final class FeedbackViewModel {
             if !title.isEmpty || !description.isEmpty {
                 let feedback = Feedback(
                     version: version,
-                    type: type,
+                    type: .bug,
                     title: title,
                     description: description
                 )
                 
-                try await feedbackService.sendBugReports(feedback)
+                try await feedbackService.sendFeedback(feedback)
                 
                 successMessage = "Feedback sent successfully!"
                 print("Feedback sent!")
@@ -56,4 +55,26 @@ final class FeedbackViewModel {
     
     
     // Feature Request
+    @MainActor
+    func sendFeatureRequest() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            if !title.isEmpty || !description.isEmpty {
+                let feedback = Feedback(
+                    version: version,
+                    type: .feature,
+                    title: title,
+                    description: description
+                )
+                
+                try await feedbackService.sendFeedback(feedback)
+                successMessage = "Feedback sent successfully!"
+                
+            } else { return }
+        } catch {
+            self.errorMessage = "Something went wrong. Please try again later."
+        }
+    }
 }

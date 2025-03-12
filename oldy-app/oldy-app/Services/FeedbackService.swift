@@ -11,7 +11,8 @@ import Foundation
 final class FeedbackService {
     static let shared = FeedbackService()
     
-    func sendBugReports(_ feedback: Feedback) async throws {
+    // universal feedback report
+    func sendFeedback(_ feedback: Feedback) async throws {
         do {
             try await supabase
                 .from("oldy-app")
