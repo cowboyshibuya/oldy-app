@@ -9,14 +9,10 @@ import SwiftUI
 
 struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
-    
-    
-    @State private var title = ""
-    @State private var description = ""
-    
+    @State var feedBackVM : FeedbackViewModel = .shared
+  
     @FocusState private var isTextEditorFocused : Bool
     // add image
-    
     
     /**
      TODO:
@@ -39,20 +35,20 @@ struct BugReportView: View {
                         Text("What is the issue?")
                             .font(.headline)
                             .foregroundStyle(.secondary)
-                        TextField("Bug in the settings page", text: $title)
+                        TextField("Bug in the settings page", text: $feedBackVM.title)
                             .padding()
                             .glass(cornerRadius: 20)
                             .overlay (
                                 Button {
-                                    if !title.isEmpty {
-                                        title = ""
+                                    if !feedBackVM.title.isEmpty {
+                                        feedBackVM.title = ""
                                     }
                                 } label: {
                                     Image(systemName: "xmark.circle")
                                         .foregroundStyle(.secondary)
                                 }
                                     .padding(.trailing, 20)
-                                    .opacity(title.isEmpty ? 0 : 1)
+                                    .opacity(feedBackVM.title.isEmpty ? 0 : 1)
                                 ,alignment: .trailing
                             )
                     }
@@ -62,7 +58,7 @@ struct BugReportView: View {
                         Text("Describe the issue")
                             .font(.headline)
                             .foregroundStyle(.secondary)
-                        TextEditor(text: $description)
+                        TextEditor(text: $feedBackVM.description)
                             .focused($isTextEditorFocused)
                             .padding()
                             .textEditorStyle(.plain)
@@ -83,14 +79,14 @@ struct BugReportView: View {
                             .foregroundStyle(.secondary)
                             .fontWeight(.bold)
                             .offset(y: 50)
-                            .opacity(isTextEditorFocused || !description.isEmpty ? 0 : 1)
+                            .opacity(isTextEditorFocused || !feedBackVM.description.isEmpty ? 0 : 1)
                             )
                             .frame(width: .infinity)
                     }
                     .padding(.horizontal)
                     
                     DefaultButton(icon: "checkmark.circle", title: "Submit") {
-                        
+                        Task { await feedBackVM.sendBugReport() }
                     }
                 }
             }
@@ -98,6 +94,13 @@ struct BugReportView: View {
             .toolbar {
                 Button("Cancel") {
                     dismiss()
+                }
+            }
+            .alert("Success", isPresented: .constant(feedBackVM.successMessage != nil)) {
+                Button("Ok") { feedBackVM.successMessage = nil }
+            } message: {
+                if let message = feedBackVM.successMessage {
+                    Text(message)
                 }
             }
         }
