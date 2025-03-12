@@ -15,6 +15,7 @@ struct SettingsView: View {
     @State private var showBackgroundColorSelectionSheet: Bool = false
     @State private var showEditProfileSheet: Bool = false
     @State private var showBugReportSheet: Bool = false
+    @State private var showFeatureRequestSheet: Bool = false
     
     @State private var showResetAlert = false
 
@@ -76,6 +77,7 @@ struct SettingsView: View {
             .toolbar {
                 Menu {
                     Button("Report a bug") { showBugReportSheet = true}
+                    Button("Request a feature") { showFeatureRequestSheet = true}
                     Button("Reset", role: .destructive) {
                         resetProfile()
                     }
@@ -93,6 +95,9 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showBugReportSheet) {
                 BugReportView()
+            }
+            .sheet(isPresented: $showFeatureRequestSheet) {
+                FeatureRequestView()
             }
             .alert("Reset App", isPresented: $showResetAlert) {
                 Button("Reset", role: .destructive) {
