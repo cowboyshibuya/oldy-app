@@ -13,8 +13,8 @@ struct SettingsView: View {
     
     // sheet properties
     @State private var showBackgroundColorSelectionSheet: Bool = false
-    @State private var showEditProfileSheet: Bool = true
-
+    @State private var showEditProfileSheet: Bool = false
+    @State private var showBugReportSheet: Bool = false
     
     @State private var showResetAlert = false
 
@@ -75,7 +75,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 Menu {
-                    Button("Report a bug") {}
+                    Button("Report a bug") { showBugReportSheet = true}
                     Button("Reset", role: .destructive) {
                         resetProfile()
                     }
@@ -90,6 +90,9 @@ struct SettingsView: View {
             .sheet(isPresented: $showEditProfileSheet) {
                 EditProfileView(profile: profile)
                     .presentationDetents([.medium, .large])
+            }
+            .sheet(isPresented: $showBugReportSheet) {
+                BugReportView()
             }
             .alert("Reset App", isPresented: $showResetAlert) {
                 Button("Reset", role: .destructive) {

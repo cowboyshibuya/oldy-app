@@ -19,20 +19,5 @@ public var footerView: some View {
     .foregroundStyle(.secondary)
 }
 
-private func getAppVersion() -> String {
-    if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-        return appVersion
-    }
-    
-    return "Unknown"
-}
-
-private func getBuildNumber() -> String {
-    if let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-        return buildNumber
-    }
-    return "Unknown"
-}
-
 
 
