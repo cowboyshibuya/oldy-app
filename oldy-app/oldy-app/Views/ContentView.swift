@@ -11,13 +11,19 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var context
     @Query private var profiles: [Profile]
+    
+    @AppStorage("showWelcomePage") private var showWelcomePage: Bool = true
 
     var body: some View {
         Group {
-            if let profile = profiles.first {
-                 MainView(profile: profile)
+            if showWelcomePage {
+                WelcomeView()
             } else {
-                 SetUpProfileView()
+                if let profile = profiles.first {
+                    MainView(profile: profile)
+                } else {
+                    SetUpProfileView()
+                }
             }
         }
     }

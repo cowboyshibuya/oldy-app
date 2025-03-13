@@ -20,10 +20,10 @@ struct WelcomeView: View {
                 
                 VStack(spacing: 50) {
                     
-                    Spacer()
-                    
-                    Text("👵 Oldy Logo here")
-                        .font(.title2)
+                    Image("logo-no-bg-2")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100)
                     
                     VStack(spacing: 20) {
                         VStack {
@@ -34,11 +34,15 @@ struct WelcomeView: View {
                         .font(.system(size: 30))
                         .opacity(showAnimation ? 1 : 0)
                         
+                        Image("illustration1")
+                            .resizable()
+                            .scaledToFit()
+
                         Text("Don't waste this precious time.")
                             .font(.title3)
                             .fontWeight(.light)
                     }
-                    
+                                        
                     Spacer()
                     
                     DefaultButton(icon: "arrow.right", title: "Let's Get Started") {
