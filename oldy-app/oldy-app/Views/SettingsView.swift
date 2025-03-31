@@ -59,15 +59,16 @@ struct SettingsView: View {
                     .foregroundStyle(.white)
                     Spacer()
                     
-                    VStack(spacing: 15) {
-                        // Trust & Security
-                        Button("Trust and Security") {}
-                            .bold()
-                        // Contact US
-                        Button("Contact Us"){}
-                            .bold()
-                    }
-                    .foregroundStyle(.white)
+//                    VStack(spacing: 15) {
+//                        // Trust & Security
+//                        Button("Trust and Security") {}
+//                            .bold()
+//                        // Contact US
+//                        Button("Contact Us"){}
+//                            .bold()
+//                    }
+//                    .foregroundStyle(.white)
+                    footerView
                     Spacer()
                 } // VStack
                 .padding()
